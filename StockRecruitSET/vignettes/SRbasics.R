@@ -4,7 +4,7 @@ list(EVAL = TRUE)
 ## ----load_lib,echo=FALSE-------------------------------------------------
 library(StockRecruitSET)
 library(TMB)
-knitr::opts_chunk$set(eval = if (isTRUE(exists("params"))) params$EVAL else FALSE)
+knitr::opts_chunk$set()
 
 ## ----chsdat--------------------------------------------------------------
 S = simS(n=100, pars=c(60,200))

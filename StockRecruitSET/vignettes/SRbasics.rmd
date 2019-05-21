@@ -10,10 +10,10 @@ params:
   EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 ---
 
-```{r load_lib,echo=FALSE}
+```{r load_lib,message=FALSE}
 library(StockRecruitSET)
 library(TMB)
-knitr::opts_chunk$set(eval = if (isTRUE(exists("params"))) params$EVAL else FALSE)
+knitr::opts_chunk$set(warning = FALSE)
 ```
 
 ## Continuous Hockey-Stick Example
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(eval = if (isTRUE(exists("params"))) params$EVAL else FALS
 ```{r chsdat}
 S = simS(n=100, pars=c(60,200))
 g=1 #assume this for 
-R = simR(S=S, shape="contHockey", pars=c(1, 100, g), varlog=.1)
+R = simR(S=S, shape="contHockey", pars=c(.5, 100, g), varlog=.1)
 plot(S,R)
 ```
 
@@ -31,6 +31,11 @@ plot(S,R)
 mod=fitSRCurve(S, R, shape="contHockey", g=g)
 sdr=sdreport(mod)
 summary(sdr)
+```
+
+### Estimate Blim
+```{r chblim}
+calcBlim(S, R)
 ```
 
 ### Plot the fit
@@ -42,6 +47,7 @@ Rfit=simR(S=Srange,
 )
 plot(S, R)
 lines(Srange, Rfit, col=2, lwd=3)
+abline(v = calcBlim(S, R), lty=2)
 ```
 
 ## Ricker Example

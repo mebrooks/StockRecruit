@@ -11,7 +11,7 @@ calcBlim(S, R, quant = 0.75, type = 1, g = 1, by = 1)
 
 \item{R}{vector of recruitment values}
 
-\item{quant}{quantile above which recruitment is considered to be "large" in a "Spasmodic stock" (language from ICES Advice Technical Guidelines)}
+\item{quant}{quantile above which recruitment is considered to be "large" in a "spasmodic stock" (language from ICES Advice Technical Guidelines)}
 
 \item{type}{way of calculating Blim.
 1 is the minimum S that gives good recruitment.

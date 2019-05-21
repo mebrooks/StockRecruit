@@ -13,7 +13,7 @@
 ##' @importFrom bbmle coef
 ##' @importFrom bbmle logLik
 ##' @export
-calcBlim = function(S, R, quant=0.75, type=1, g=1, by=1)
+calcBlim = function(S, R, quant=0.75, type=2.1, g=1, by=1)
 {
 	if(length(S)!=length(R)) stop("Lengths of S and R must match")
 
@@ -37,7 +37,7 @@ calcBlim = function(S, R, quant=0.75, type=1, g=1, by=1)
 		dat=data.frame(S=S, R=R)
 		mod=fitSRCurve(S, R, shape="contHockey", g=g)
 		k=mod$env$last.par[c('delta')]
-		return(k)
+		return(unname(k))
 	}
 
 	if(type==5) { return(min(S)) }
