@@ -7,6 +7,6 @@ Estimation of continuous functions is done using maximum marginal likelihood est
 
 To install `StockRecruitSET`, first install `TMB` from CRAN, then install `StockRecruitSET` via
 ```
-devtools::install_github("mebrooks/stockrecruit/StockRecruitSET")
+devtools::install_github("mebrooks/stockrecruit/StockRecruitSET", build_opts = c("--no-resave-data", "--no-manual"))
 ```
 You may need to install the `devtools` package, compiler tools, and other dependencies first. To install TMB, it may be necessary to install the version of Rtools that matches your version of R.
