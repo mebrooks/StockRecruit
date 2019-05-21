@@ -1,0 +1,13 @@
+all: BevertonHolt.dll Ricker.dll contHockey.dll
+
+BevertonHolt.dll: BevertonHolt.cpp
+	Rscript --vanilla -e "TMB::compile('BevertonHolt.cpp')"
+
+Ricker.dll: Ricker.cpp
+	Rscript --vanilla -e "TMB::compile('Ricker.cpp')"
+
+contHockey.dll: contHockey.cpp
+	Rscript --vanilla -e "TMB::compile('contHockey.cpp')"
+
+clean:
+	rm -rf *o

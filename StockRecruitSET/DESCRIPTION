@@ -1,0 +1,19 @@
+Package: StockRecruitSET
+Title: Stock Recruitment Simulation and Estimation Tools
+Version: 0.0.0.1
+Authors@R: c(
+             person("Mollie", "Brooks", role = c("aut", "cre"), 
+                    email = "mollieebrooks@gmail.com"))
+Description: This package contains methods for simulating and estimating stock recruitment 
+Depends:
+    TMB,
+    RcppEigen,
+    bbmle
+Suggests: knitr, rmarkdown
+License: AGPL-3
+LazyData: true
+VignetteBuilder: knitr
+URL: https://github.com/mebrooks/StockRecruitSET
+BugReports: https://github.com/mebrooks/StockRecruitSET/issues
+LinkingTo: TMB, RcppEigen
+RoxygenNote: 6.1.1
