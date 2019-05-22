@@ -1,4 +1,4 @@
-##' Calculate Blim in ways dexcribed by ICES Advice Technical Guidelines Table 12.4.3.1.3
+##' Calculate Blim in ways described by ICES Advice Technical Guidelines Table 12.4.3.1.3
 ##' @param S vector of spawning stock biomasses
 ##' @param R  vector of recruitment values
 ##' @param quant quantile above which recruitment is considered to be "large" in a "spasmodic stock" (language from ICES Advice Technical Guidelines)
