@@ -2,9 +2,9 @@
 % Please edit documentation in R/biomassThresholdMethods.R
 \name{calcBlim}
 \alias{calcBlim}
-\title{Calculate Blim in ways dexcribed by ICES Advice Technical Guidelines Table 12.4.3.1.3}
+\title{Calculate Blim in ways described by ICES Advice Technical Guidelines Table 12.4.3.1.3}
 \usage{
-calcBlim(S, R, quant = 0.75, type = 1, g = 1, by = 1)
+calcBlim(S, R, quant = 0.75, type = 2.1, g = 0.1, by = NULL)
 }
 \arguments{
 \item{S}{vector of spawning stock biomasses}
@@ -21,8 +21,8 @@ calcBlim(S, R, quant = 0.75, type = 1, g = 1, by = 1)
 
 \item{g}{is the assumed smoothing parameter in the hyperbolic hockey-stick model.}
 
-\item{by}{the precision needed for a grid search for breakpoint in a hockey-stick model.}
+\item{by}{the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.}
 }
 \description{
-Calculate Blim in ways dexcribed by ICES Advice Technical Guidelines Table 12.4.3.1.3
+Calculate Blim in ways described by ICES Advice Technical Guidelines Table 12.4.3.1.3
 }

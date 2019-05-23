@@ -43,7 +43,7 @@ calcBlim(S, R)
 Srange=seq(min(S), max(S), length=100)
 Rfit=simR(S=Srange,
 		shape="contHockey", 
-		pars=c(mod$env$last.par[c('beta','delta')], g)
+		pars=c(exp(mod$env$last.par[c('log_beta','log_delta')]), g)
 )
 plot(S, R)
 lines(Srange, Rfit, col=2, lwd=3)
@@ -71,7 +71,7 @@ summary(sdr)
 Srange=seq(min(S), max(S), length=100)
 Rfit=simR(S=Srange,
 		shape="Ricker", 
-		pars=c(mod$env$last.par[c('a','b')])
+		pars=c(exp(mod$env$last.par[c('log_a','log_b')]))
 )
 plot(S, R)
 lines(Srange, Rfit, col=2, lwd=3)
@@ -99,7 +99,7 @@ summary(sdr)
 Srange=seq(min(S), max(S), length=100)
 Rfit=simR(S=Srange,
 		shape="BevertonHolt", 
-		pars=c(mod$env$last.par[c('a','b')])
+		pars=c(exp(mod$env$last.par[c('log_a','log_b')]))
 )
 plot(S, R)
 lines(Srange, Rfit, col=2, lwd=3)

@@ -8,26 +8,32 @@
 ##' 2.1 is estimated S for inflection point in a hyperbolic hockey-stick model.
 ##' 5 is the minimum observed S (Blim=Bloss).
 ##' @param g is the assumed smoothing parameter in the hyperbolic hockey-stick model.
-##' @param by the precision needed for a grid search for breakpoint in a hockey-stick model.
+##' @param by the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.
 ##' @importFrom bbmle mle2
 ##' @importFrom bbmle coef
 ##' @importFrom bbmle logLik
 ##' @export
-calcBlim = function(S, R, quant=0.75, type=2.1, g=1, by=1)
+calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL)
 {
+	#remove missing combinations
+	dat=data.frame(S, R)
+	if(any(is.na(dat))) {dat=na.omit(dat); warning("NaN is being removed from data.")}
+	S=dat$S; R=dat$R
+
 	if(length(S)!=length(R)) stop("Lengths of S and R must match")
 
 	if(type==1)	{ return(min(S[which(R>=quantile(R, quant))])) }
 
 	if(type==2) {
+		if(is.null(by)) by=(max(S)-min(S))/99
 		Blim=seq(min(S), max(S), by=by)
 		LLB=Blim
 		LLB[]=NA
 
 		for(i in 1:length(Blim)) {
 			x=Blim[i]
-			fit = mle2(log(R)~ dnorm(log(ifelse(S<x, alpha*S, alpha*x)), sd=exp(log_sd)),
-								 start=list(alpha=10, log_sd=10), data=data.frame(S, R, x), method = "Nelder-Mead")
+			fit = mle2(log(R)~ dnorm(log(ifelse(S<x, exp(log_alpha)*S, exp(log_alpha)*x)), sd=exp(log_sd)),
+								 start=list(log_alpha=log(median(R/S)), log_sd=0), data=data.frame(S, R, x), method = "Nelder-Mead")
 			LLB[i]=logLik(fit)
 		}
 		return(Blim[which.min(-LLB)])
@@ -36,8 +42,7 @@ calcBlim = function(S, R, quant=0.75, type=2.1, g=1, by=1)
 	if(type==2.1) {
 		dat=data.frame(S=S, R=R)
 		mod=fitSRCurve(S, R, shape="contHockey", g=g)
-		k=mod$env$last.par[c('delta')]
-		return(unname(k))
+		return(unname(exp(mod$env$last.par[c('log_delta')])))
 	}
 
 	if(type==5) { return(min(S)) }

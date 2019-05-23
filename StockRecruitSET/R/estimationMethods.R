@@ -8,14 +8,14 @@
 ##' @details
 ##' \itemize{
 ##' \item "contHockey" shape has pars=c(beta, delta, log_sd) following the bent hyperbola hockey-stick stock-recruitment model (Mesnil &Rochet 2010)
-##' \item "Ricker" shape has pars=c(a, b, log_sd) where expected recruitment is a*S*exp(-b*S)
-##' \item "BevertonHolt" shape has pars=c(a, b, log_sd) where expected recruitment is a*S/(1+b*S)
+##' \item "Ricker" shape has pars=c(log_a, log_b, log_sd) where expected recruitment is a*S*exp(-b*S)
+##' \item "BevertonHolt" shape has pars=c(log_a, log_b, log_sd) where expected recruitment is a*S/(1+b*S)
 ##' }
 ##' @useDynLib contHockey
 ##' @useDynLib Ricker
 ##' @useDynLib BevertonHolt
 ##' @export
-fitSRCurve = function(S, R, shape="contHockey", g=0.5, start=NULL, weights=NULL) {
+fitSRCurve = function(S, R, shape="contHockey", g=0.1, start=NULL, weights=NULL) {
 	if(length(S)!=length(R)) stop("Lengths of S and R must match")
 
 	if(is.null(start)) start=initializePars(dat=data.frame(S=S, R=R), shape)
@@ -32,9 +32,9 @@ fitSRCurve = function(S, R, shape="contHockey", g=0.5, start=NULL, weights=NULL)
 initializePars=function(dat, shape) {
 	if(any(is.na(dat))) {dat=na.omit(dat); warning("NaN is being removed from data.")}
 	pars=switch(shape,
-		"contHockey" =  list(beta=.1, delta=dat$S[which.min(dat$R-exp(mean(log(dat$R))))], log_sd=.1),
-		"Ricker" = c(a=exp(1), b=.01, log_sd=.1),
-		"BevertonHolt" = c(a=1, b=.1, log_sd=.1)
+		"contHockey" =  list(log_beta=log(median(dat$R/dat$S)), log_delta=log(dat$S[which.min(dat$R-exp(mean(log(dat$R))))]), log_sd=0),
+		"Ricker" = c(log_a=0, log_b=0, log_sd=0),
+		"BevertonHolt" = c(log_a=0, log_b=0, log_sd=0)
 	)
 
 	return(pars)
