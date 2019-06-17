@@ -60,11 +60,14 @@ calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL)
 ##' \item R. A. Myers, A. A. Rosenberg, P. M. Mace, N. Barrowman, V. R. Restrepo, In search of thresholds for recruitment overfishing, ICES Journal of Marine Science, Volume 51, Issue 2, 1994, Pages 191-205, https://doi.org/10.1006/jmsc.1994.1020
 ##' }
 ##' @export
-calcBRP=function(S, R, perc=50, shape="Ricker", by=1, maxS=500) {
+calcBRP=function(S, R, perc=50, shape="Ricker", by=NULL, maxS=NULL) {
 	mod=fitSRCurve(S, R, shape)
 
-	a=mod$env$last.par['a']
-	b=mod$env$last.par['b']
+	a=exp(mod$env$last.par['log_a'])
+	b=exp(mod$env$last.par['log_b'])
+
+	if(is.null(maxS)) maxS=5*max(S)
+	if(is.null(by)) by=(maxS-0)/99
 
 	Srange=seq(0, maxS, by=by)
 	Rfit=simR(S=Srange,
@@ -79,6 +82,41 @@ calcBRP=function(S, R, perc=50, shape="Ricker", by=1, maxS=500) {
 	Rtarget=maxR*perc/100
 	Starget=Srange[which.min(abs(Rtarget-Rfit))]
 	return(c(S=Starget, R=Rtarget))
+
+}
+
+##' Given parameters a and b to define a curve, and a target value of S, find the percentage of maxR corresponding to that S value.
+##' @param shape can be "hockey", "Ricker", or "Beverton-Holt"
+##' @param by the precision needed for a grid search for target. If missing, 100 points from 0 to maxS are tried.
+##' @details
+##' \itemize{
+##' \item "hockey" shape must have pars=c(a,b) where (a,b) is the inflection point
+##' \item "contHockey" shape must have pars=c(beta, S*) following the notation of Mesnil & Rochet 2010 (eqn 4)
+##' \item "Ricker shape" must have pars=c(a,b) where expected recruitment is a*S*exp(-b*S)
+##' \item "BevertonHolt" shape must have pars=c(a,b) where expected recruitment is a*S/(1+b*S)
+##' \item tail is a named list containing a probability ("prob") of observing a bonanza year and a multiplier ("mult") to indicate how a bonanza compares to the expected mean. e.g. tail=list(prob=0.2, mult=1.5)
+##' }
+##' @export
+calcPerc=	function(a, b, Starget, shape="Ricker", by=NULL, maxS=10000) {
+
+	if(is.null(by)) by=(maxS-0)/99
+
+	Srange=seq(0, maxS, by=by)
+	Rfit=simR(S=Srange,
+					shape=shape,
+					pars=c(a, b))
+
+	maxR=unname(switch(shape,
+									 "Ricker"=a/(b*exp(1)),
+									 "BevertonHolt"=a/b,
+									 "contHockey"= 2*a*b,
+									 "hockey"= b))
+
+
+	Rtarget=Rfit[which.min(abs(Starget-Srange))]
+
+	perc=Rtarget/maxR*100
+	return(perc)
 
 }
 

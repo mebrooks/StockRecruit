@@ -2,6 +2,7 @@
 
 export(calcBRP)
 export(calcBlim)
+export(calcPerc)
 export(fitSRCurve)
 export(simR)
 export(simS)

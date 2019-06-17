@@ -4,7 +4,7 @@
 \alias{calcBRP}
 \title{Calculate biomass reference points (BRPs) in ways based on maximum recruitment (Myers et al. 1994)}
 \usage{
-calcBRP(S, R, perc = 50, shape = "Ricker", by = 1, maxS = 500)
+calcBRP(S, R, perc = 50, shape = "Ricker", by = NULL, maxS = NULL)
 }
 \arguments{
 \item{S}{vector of spawning stock biomasses}
