@@ -9,11 +9,12 @@
 ##' 5 is the minimum observed S (Blim=Bloss).
 ##' @param g is the assumed smoothing parameter in the hyperbolic hockey-stick model.
 ##' @param by the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.
+##' @param AIC should the AIC be returned instead of the estimate? Only availabel with type 2 and 2.1.
 ##' @importFrom bbmle mle2
 ##' @importFrom bbmle coef
 ##' @importFrom bbmle logLik
 ##' @export
-calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL)
+calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL, AIC=FALSE)
 {
 	#remove missing combinations
 	dat=data.frame(S, R)
@@ -36,13 +37,15 @@ calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL)
 								 start=list(log_alpha=log(median(R/S)), log_sd=0), data=data.frame(S, R, x), method = "Nelder-Mead")
 			LLB[i]=logLik(fit)
 		}
-		return(Blim[which.min(-LLB)])
+		if(!AIC) return(Blim[which.min(-LLB)])
+		if(AIC) return(2*2 + 2*min(-LLB))
 	}
 
 	if(type==2.1) {
 		dat=data.frame(S=S, R=R)
 		mod=fitSRCurve(S, R, shape="contHockey", g=g)
-		return(unname(exp(mod$env$last.par[c('log_delta')])))
+		if(!AIC) return(unname(exp(mod$env$last.par[c('log_delta')])))
+		if(AIC) return(2*2 + 2*mod$fn())
 	}
 
 	if(type==5) { return(min(S)) }
@@ -66,7 +69,7 @@ calcBRP=function(S, R, perc=50, shape="Ricker", by=NULL, maxS=NULL) {
 	a=exp(mod$env$last.par['log_a'])
 	b=exp(mod$env$last.par['log_b'])
 
-	if(is.null(maxS)) maxS=5*max(S)
+	if(is.null(maxS)) maxS=max(S)
 	if(is.null(by)) by=(maxS-0)/99
 
 	Srange=seq(0, maxS, by=by)
@@ -120,3 +123,16 @@ calcPerc=	function(a, b, Starget, shape="Ricker", by=NULL, maxS=10000) {
 
 }
 
+
+##' Bootstrap the breakpoint of a hockey-stick stock recruitment curve
+##' @param S vector of spawning stock biomasses
+##' @param R  vector of recruitment values
+##' @param FUN function to be applied to summarize Blim across nsim simulations. The default is the CV.
+##' @param ... arguments to pass to calcBlim function
+##' @export
+bootBlim=function(S, R, nsim=100, FUN = function(x){sqrt(var(x))/mean(x)}, ...){
+	if(length(S)!=length(R)) stop("Lengths of S and R must match")
+	Blims=replicate(nsim, calcBlim(S[sample(length(S), size=length(S), replace=TRUE)],
+																 R[sample(length(S), size=length(S), replace=TRUE)], ...))
+	FUN(Blims)
+}

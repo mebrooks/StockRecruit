@@ -4,7 +4,8 @@
 \alias{calcBlim}
 \title{Calculate Blim in ways described by ICES Advice Technical Guidelines Table 12.4.3.1.3}
 \usage{
-calcBlim(S, R, quant = 0.75, type = 2.1, g = 0.1, by = NULL)
+calcBlim(S, R, quant = 0.75, type = 2.1, g = 0.1, by = NULL,
+  AIC = FALSE)
 }
 \arguments{
 \item{S}{vector of spawning stock biomasses}
@@ -22,6 +23,8 @@ calcBlim(S, R, quant = 0.75, type = 2.1, g = 0.1, by = NULL)
 \item{g}{is the assumed smoothing parameter in the hyperbolic hockey-stick model.}
 
 \item{by}{the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.}
+
+\item{AIC}{should the AIC be returned instead of the estimate? Only availabel with type 2 and 2.1.}
 }
 \description{
 Calculate Blim in ways described by ICES Advice Technical Guidelines Table 12.4.3.1.3
