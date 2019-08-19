@@ -66,7 +66,7 @@ calcBRP=function(S, R, perc=50, shape="Ricker", by=NULL, maxS=NULL) {
 	a=exp(mod$env$last.par['log_a'])
 	b=exp(mod$env$last.par['log_b'])
 
-	if(is.null(maxS)) maxS=5*max(S)
+	if(is.null(maxS)) maxS=max(S)
 	if(is.null(by)) by=(maxS-0)/99
 
 	Srange=seq(0, maxS, by=by)
@@ -120,3 +120,15 @@ calcPerc=	function(a, b, Starget, shape="Ricker", by=NULL, maxS=10000) {
 
 }
 
+
+##' Bootstrap the breakpoint of a hockey-stick stock recruitment curve
+##' @param S vector of spawning stock biomasses
+##' @param R  vector of recruitment values
+##' @param FUN function to be applied to summarize Blim across nsim simulations. The default is the CV.
+##' @param ... arguments to pass to calcBlim function
+bootBlim=function(S, R, nsim=100, FUN = function(x){sqrt(var(x))/mean(x)}, ...){
+	if(length(S)!=length(R)) stop("Lengths of S and R must match")
+	Blims=replicate(nsim, calcBlim(S[sample(length(S), size=length(S), replace=TRUE)],
+																 R[sample(length(S), size=length(S), replace=TRUE)], ...))
+	FUN(Blims)
+}
