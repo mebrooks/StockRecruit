@@ -9,11 +9,12 @@
 ##' 5 is the minimum observed S (Blim=Bloss).
 ##' @param g is the assumed smoothing parameter in the hyperbolic hockey-stick model.
 ##' @param by the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.
+##' @param AIC should the AIC be returned instead of the estimate? Only availabel with type 2 and 2.1.
 ##' @importFrom bbmle mle2
 ##' @importFrom bbmle coef
 ##' @importFrom bbmle logLik
 ##' @export
-calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL)
+calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL, AIC=FALSE)
 {
 	#remove missing combinations
 	dat=data.frame(S, R)
@@ -36,13 +37,15 @@ calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL)
 								 start=list(log_alpha=log(median(R/S)), log_sd=0), data=data.frame(S, R, x), method = "Nelder-Mead")
 			LLB[i]=logLik(fit)
 		}
-		return(Blim[which.min(-LLB)])
+		if(!AIC) return(Blim[which.min(-LLB)])
+		if(AIC) return(2*2 + 2*min(-LLB))
 	}
 
 	if(type==2.1) {
 		dat=data.frame(S=S, R=R)
 		mod=fitSRCurve(S, R, shape="contHockey", g=g)
-		return(unname(exp(mod$env$last.par[c('log_delta')])))
+		if(!AIC) return(unname(exp(mod$env$last.par[c('log_delta')])))
+		if(AIC) return(2*2 + 2*mod$fn())
 	}
 
 	if(type==5) { return(min(S)) }
