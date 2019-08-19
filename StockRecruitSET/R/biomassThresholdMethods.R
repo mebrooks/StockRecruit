@@ -129,6 +129,7 @@ calcPerc=	function(a, b, Starget, shape="Ricker", by=NULL, maxS=10000) {
 ##' @param R  vector of recruitment values
 ##' @param FUN function to be applied to summarize Blim across nsim simulations. The default is the CV.
 ##' @param ... arguments to pass to calcBlim function
+##' @export
 bootBlim=function(S, R, nsim=100, FUN = function(x){sqrt(var(x))/mean(x)}, ...){
 	if(length(S)!=length(R)) stop("Lengths of S and R must match")
 	Blims=replicate(nsim, calcBlim(S[sample(length(S), size=length(S), replace=TRUE)],
