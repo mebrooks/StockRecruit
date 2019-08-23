@@ -15,12 +15,14 @@ calcBlim(S, R, quant = 0.75, type = 2.1, g = 0.1, by = NULL,
 \item{quant}{quantile above which recruitment is considered to be "large" in a "spasmodic stock" (language from ICES Advice Technical Guidelines)}
 
 \item{type}{way of calculating Blim.
-1 is the minimum S that gives good recruitment.
-2 is the estimated S for a breakpoint in a hockey stick model.
-2.1 is estimated S for inflection point in a hyperbolic hockey-stick model.
-5 is the minimum observed S (Blim=Bloss).}
+\itemize{
+\item 1 is the minimum S that gives large recruitment. Must specify \code{quant} to define "large".
+ \item 2 is the estimated S for a breakpoint in a hockey stick model.
+ \item 2.1 is estimated S for inflection point in a bent hyperbola hockey-stick stock-recruitment model (Mesnil & Rochet 2010).
+ \item 5 is the minimum observed S (Blim=Bloss).
+ }}
 
-\item{g}{is the assumed smoothing parameter in the hyperbolic hockey-stick model.}
+\item{g}{is the assumed smoothing parameter in the bent hyperbola hockey-stick model.}
 
 \item{by}{the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.}
 
