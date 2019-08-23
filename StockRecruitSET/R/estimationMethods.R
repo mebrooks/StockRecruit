@@ -7,7 +7,7 @@
 ##' @param weights (optional) weights of each data point to reflect uncertainty
 ##' @details
 ##' \itemize{
-##' \item "contHockey" shape has pars=c(beta, delta, log_sd) following the bent hyperbola hockey-stick stock-recruitment model (Mesnil &Rochet 2010)
+##' \item "contHockey" shape has pars=c(beta, delta, log_sd) following the bent hyperbola hockey-stick stock-recruitment model (Mesnil & Rochet 2010)
 ##' \item "Ricker" shape has pars=c(log_a, log_b, log_sd) where expected recruitment is a*S*exp(-b*S)
 ##' \item "BevertonHolt" shape has pars=c(log_a, log_b, log_sd) where expected recruitment is a*S/(1+b*S)
 ##' }
@@ -39,3 +39,5 @@ initializePars=function(dat, shape) {
 
 	return(pars)
 }
+
+
