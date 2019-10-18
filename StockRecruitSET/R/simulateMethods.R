@@ -49,8 +49,8 @@ simR = function(S, shape="contHockey", pars=c(10, 100), g=1, var=0, cor=0, varlo
 	  cormat = cor^abs(matrix(1: n, n, n, byrow=TRUE)-matrix(1: n, n, n))
 	  z = mvrnorm(1, rep(0, n), cormat)
 	} else {
-	 mu=log(m)
 	 sig=varlog
+	 mu=log(m)-sig*sig/2
 	 z=rnorm(n=n, mean=rep(0, n), sd=1)
 	}
 	x = mu + z * sig
