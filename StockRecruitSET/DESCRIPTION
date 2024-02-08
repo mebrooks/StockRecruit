@@ -16,4 +16,4 @@ VignetteBuilder: knitr
 URL: https://github.com/mebrooks/StockRecruitSET
 BugReports: https://github.com/mebrooks/StockRecruitSET/issues
 LinkingTo: TMB, RcppEigen
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.3

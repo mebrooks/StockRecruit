@@ -4,8 +4,16 @@
 \alias{simR}
 \title{Simulate recruitment}
 \usage{
-simR(S, shape = "contHockey", pars = c(10, 100), g = 1, var = 0,
-  cor = 0, varlog = NULL, tail = NULL)
+simR(
+  S,
+  shape = "contHockey",
+  pars = c(10, 100),
+  g = 1,
+  var = 0,
+  cor = 0,
+  varlog = NULL,
+  tail = NULL
+)
 }
 \arguments{
 \item{shape}{can be "hockey", "Ricker", or "Beverton-Holt"}

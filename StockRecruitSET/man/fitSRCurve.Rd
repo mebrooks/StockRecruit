@@ -4,8 +4,7 @@
 \alias{fitSRCurve}
 \title{Fit a stock recruitment curve}
 \usage{
-fitSRCurve(S, R, shape = "contHockey", g = 0.1, start = NULL,
-  weights = NULL)
+fitSRCurve(S, R, shape = "contHockey", g = 0.1, start = NULL, weights = NULL)
 }
 \arguments{
 \item{S}{vector of spawning stock biomasses}
