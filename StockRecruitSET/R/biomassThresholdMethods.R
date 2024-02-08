@@ -11,12 +11,13 @@
 ##'  }
 ##' @param g is the assumed smoothing parameter in the bent hyperbola hockey-stick model.
 ##' @param by the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.
-##' @param AIC should the AIC be returned instead of the estimate? Only availabel with type 2 and 2.1.
+##' @param AIC should the AIC be returned instead of the estimate? Only available with type 2 and 2.1.
+##' @param nmin when type=1, the number of minima SSB values to average (of the ones that give "large" recruitment)
 ##' @importFrom bbmle mle2
 ##' @importFrom bbmle coef
 ##' @importFrom bbmle logLik
 ##' @export
-calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL, AIC=FALSE)
+calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL, AIC=FALSE, nmin=NULL)
 {
 	#remove missing combinations
 	dat=data.frame(S, R)
@@ -25,7 +26,14 @@ calcBlim = function(S, R, quant=0.75, type=2.1, g=.1, by=NULL, AIC=FALSE)
 
 	if(length(S)!=length(R)) stop("Lengths of S and R must match")
 
-	if(type==1)	{ return(min(S[which(R>=quantile(R, quant))])) }
+	if(type==1)	{
+		if(is.null(nmin) ){
+		return(min(S[which(R>=quantile(R, quant))]))
+		} else{
+			goodSSB = S[which(R>=quantile(R, quant))] #SSB with "good" recruitment
+			return(mean(goodSSB[order(goodSSB)][1:nmin]))
+		}
+	}
 
 	if(type==2) {
 		if(is.null(by)) by=(max(S)-min(S))/99

@@ -8,7 +8,7 @@ knitr::opts_chunk$set(warning = FALSE)
 
 ## ----chsdat--------------------------------------------------------------
 S = simS(n=100, pars=c(60,200))
-g=1 #assume this for 
+g=1 #assume this for
 R = simR(S=S, shape="contHockey", pars=c(.5, 100, g), varlog=.1)
 plot(S,R)
 
@@ -23,7 +23,7 @@ calcBlim(S, R)
 ## ----chsplot-------------------------------------------------------------
 Srange=seq(min(S), max(S), length=100)
 Rfit=simR(S=Srange,
-		shape="contHockey", 
+		shape="contHockey",
 		pars=c(exp(mod$env$last.par[c('log_beta','log_delta')]), g)
 )
 plot(S, R)
@@ -43,7 +43,7 @@ summary(sdr)
 ## ----rplot---------------------------------------------------------------
 Srange=seq(min(S), max(S), length=100)
 Rfit=simR(S=Srange,
-		shape="Ricker", 
+		shape="Ricker",
 		pars=c(exp(mod$env$last.par[c('log_a','log_b')]))
 )
 plot(S, R)
@@ -62,9 +62,11 @@ summary(sdr)
 ## ----bhplot--------------------------------------------------------------
 Srange=seq(min(S), max(S), length=100)
 Rfit=simR(S=Srange,
-		shape="BevertonHolt", 
+		shape="BevertonHolt",
 		pars=c(exp(mod$env$last.par[c('log_a','log_b')]))
 )
 plot(S, R)
 lines(Srange, Rfit, col=2, lwd=3)
+
+calcBlim(S, R, type=1, quant=0.5, nmin=100)
 

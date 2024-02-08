@@ -14,6 +14,7 @@ params:
 library(StockRecruitSET)
 library(TMB)
 knitr::opts_chunk$set(warning = FALSE)
+set.seed(1111)
 ```
 
 ## Continuous Hockey-Stick Example
@@ -35,7 +36,11 @@ summary(sdr)
 
 ### Estimate Blim
 ```{r chblim}
-calcBlim(S, R)
+calcBlim(S, R) #hockey-stick breakpoint
+
+#If the stock was spasmodic, we might use the
+# average  of lowest 3 SSBs that give large (above median) recruitment
+calcBlim(S, R, type=1, quant=0.5, nmin=3)  
 ```
 
 ### Plot the fit
