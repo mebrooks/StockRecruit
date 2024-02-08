@@ -2,7 +2,7 @@
 % Please edit documentation in R/biomassThresholdMethods.R
 \name{calcBlim}
 \alias{calcBlim}
-\title{Calculate Blim in ways described by ICES Advice Technical Guidelines Table 12.4.3.1.3}
+\title{Calculate Blim in ways described by ICES Advice Technical Guidelines (2021)}
 \usage{
 calcBlim(
   S,
@@ -20,11 +20,11 @@ calcBlim(
 
 \item{R}{vector of recruitment values}
 
-\item{quant}{quantile above which recruitment is considered to be "large" in a spasmodic stock (language from ICES Advice Technical Guidelines)}
+\item{quant}{quantile above which recruitment is considered to be "large" in a spasmodic stock (ICES 2021)}
 
 \item{type}{way of calculating Blim.
 \itemize{
-\item 1 is the minimum S (or \code{nmin>1} minima) that gives large recruitment. Must specify \code{quant} to define "large".
+ \item 1 is the minimum S (or avg of \code{nmin} minima, see below) that gives large recruitment. Must specify \code{quant} to define "large".
  \item 2 is the estimated S for a breakpoint in a hockey stick model.
  \item 2.1 is estimated S for inflection point in a bent hyperbola hockey-stick stock-recruitment model (Mesnil & Rochet 2010).
  \item 5 is the minimum observed S (Blim=Bloss).
@@ -32,14 +32,14 @@ calcBlim(
 
 \item{g}{is the assumed smoothing parameter in the bent hyperbola hockey-stick model.}
 
-\item{by}{the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.}
+\item{by}{when type=2, the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.}
 
 \item{AIC}{should the AIC be returned instead of the estimate? Only available with type 2 and 2.1.}
 
 \item{nmin}{when type=1, the integer number of minima SSB values to average (of the ones that give recruitment above \code{quant})}
 }
 \description{
-Calculate Blim in ways described by ICES Advice Technical Guidelines Table 12.4.3.1.3
+Calculate Blim in ways described by ICES Advice Technical Guidelines (2021)
 }
 \examples{
 \donttest{
@@ -49,5 +49,11 @@ R = simR(S=S, shape="contHockey", pars=c(.5, 100, g=1), varlog=.1)
 calcBlim(S, R) #hockey-stick breakpoint
 # average  of lowest 3 SSBs that give large (above median) recruitment
 calcBlim(S, R, type=1, quant=0.5, nmin=3)
+}
+}
+\references{
+\itemize{
+\item ICES (2021). ICES fisheries management reference points for category 1 and 2 stocks (2021). ICES Technical Guidelines. Report. https://doi.org/10.17895/ices.advice.7891
+\item Mesnil, B., and Rochet, MJ. 2010. A continuous hockey stick stock-recruit model for estimating MSY reference points. ICES Journal of Marine Science, 67: 1780-1784.
 }
 }

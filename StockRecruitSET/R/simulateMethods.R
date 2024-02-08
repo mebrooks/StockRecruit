@@ -3,7 +3,7 @@
 ##' @param pars vector of parameters for the specified shape (see details)
 ##' @param g is only used for the hyperbolic continuous hockey stick model (see details)
 ##' @param var used to specify variance on the natural scale
-##' @param cor
+##' @param cor temporal correlation in residuals
 ##' @param varlog used to specify variance on the log scale
 ##' @param tail controls bonanzas (i.e. extra good recruitment events) (see details)
 ##' @details

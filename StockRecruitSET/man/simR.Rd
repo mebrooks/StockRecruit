@@ -24,6 +24,8 @@ simR(
 
 \item{var}{used to specify variance on the natural scale}
 
+\item{cor}{temporal correlation in residuals}
+
 \item{varlog}{used to specify variance on the log scale}
 
 \item{tail}{controls bonanzas (i.e. extra good recruitment events) (see details)}

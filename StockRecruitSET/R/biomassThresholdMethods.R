@@ -1,21 +1,27 @@
-##' Calculate Blim in ways described by ICES Advice Technical Guidelines Table 12.4.3.1.3
+##' Calculate Blim in ways described by ICES Advice Technical Guidelines (2021)
 ##' @param S vector of spawning stock biomasses
 ##' @param R  vector of recruitment values
-##' @param quant quantile above which recruitment is considered to be "large" in a spasmodic stock (language from ICES Advice Technical Guidelines)
+##' @param quant quantile above which recruitment is considered to be "large" in a spasmodic stock (ICES 2021)
 ##' @param type way of calculating Blim.
-##'\itemize{
-##' \item 1 is the minimum S (or \code{nmin>1} minima) that gives large recruitment. Must specify \code{quant} to define "large".
+##' \itemize{
+##'  \item 1 is the minimum S (or avg of \code{nmin} minima, see below) that gives large recruitment. Must specify \code{quant} to define "large".
 ##'  \item 2 is the estimated S for a breakpoint in a hockey stick model.
 ##'  \item 2.1 is estimated S for inflection point in a bent hyperbola hockey-stick stock-recruitment model (Mesnil & Rochet 2010).
 ##'  \item 5 is the minimum observed S (Blim=Bloss).
 ##'  }
 ##' @param g is the assumed smoothing parameter in the bent hyperbola hockey-stick model.
-##' @param by the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.
+##' @param by when type=2, the precision needed for a grid search for breakpoint in a hockey-stick model. If missing, 100 points from min to max SSB are tried.
 ##' @param AIC should the AIC be returned instead of the estimate? Only available with type 2 and 2.1.
 ##' @param nmin when type=1, the integer number of minima SSB values to average (of the ones that give recruitment above \code{quant})
 ##' @importFrom bbmle mle2
 ##' @importFrom bbmle coef
 ##' @importFrom bbmle logLik
+##' @references
+##'\itemize{
+##' \item ICES (2021). ICES fisheries management reference points for category 1 and 2 stocks (2021). ICES Technical Guidelines. Report. https://doi.org/10.17895/ices.advice.7891
+##' \item Mesnil, B., and Rochet, MJ. 2010. A continuous hockey stick stock-recruit model for estimating MSY reference points. ICES Journal of Marine Science, 67: 1780-1784.
+##' }
+##' @export
 ##' @examples
 ##' \donttest{
 ##' set.seed(1111)
@@ -25,9 +31,7 @@
 ##' # average  of lowest 3 SSBs that give large (above median) recruitment
 ##' calcBlim(S, R, type=1, quant=0.5, nmin=3)
 ##' }
-##' @export
-calcBlim = function(S, R, quant=0.5, type=2.1, g=.1, by=NULL, AIC=FALSE, nmin=NULL)
-{
+calcBlim = function(S, R, quant=0.5, type=2.1, g=.1, by=NULL, AIC=FALSE, nmin=NULL){
 	#remove missing combinations
 	dat=data.frame(S, R)
 	if(any(is.na(dat))) {dat=na.omit(dat); warning("NaN is being removed from data.")}
