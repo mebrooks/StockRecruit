@@ -7,7 +7,7 @@
 calcBlim(
   S,
   R,
-  quant = 0.75,
+  quant = 0.5,
   type = 2.1,
   g = 0.1,
   by = NULL,
@@ -20,11 +20,11 @@ calcBlim(
 
 \item{R}{vector of recruitment values}
 
-\item{quant}{quantile above which recruitment is considered to be "large" in a "spasmodic stock" (language from ICES Advice Technical Guidelines)}
+\item{quant}{quantile above which recruitment is considered to be "large" in a spasmodic stock (language from ICES Advice Technical Guidelines)}
 
 \item{type}{way of calculating Blim.
 \itemize{
-\item 1 is the minimum S that gives large recruitment. Must specify \code{quant} to define "large".
+\item 1 is the minimum S (or \code{nmin>1} minima) that gives large recruitment. Must specify \code{quant} to define "large".
  \item 2 is the estimated S for a breakpoint in a hockey stick model.
  \item 2.1 is estimated S for inflection point in a bent hyperbola hockey-stick stock-recruitment model (Mesnil & Rochet 2010).
  \item 5 is the minimum observed S (Blim=Bloss).
@@ -36,8 +36,18 @@ calcBlim(
 
 \item{AIC}{should the AIC be returned instead of the estimate? Only available with type 2 and 2.1.}
 
-\item{nmin}{when type=1, the number of minima SSB values to average (of the ones that give "large" recruitment)}
+\item{nmin}{when type=1, the integer number of minima SSB values to average (of the ones that give recruitment above \code{quant})}
 }
 \description{
 Calculate Blim in ways described by ICES Advice Technical Guidelines Table 12.4.3.1.3
+}
+\examples{
+\donttest{
+set.seed(1111)
+S = simS(n=100, pars=c(60,200))
+R = simR(S=S, shape="contHockey", pars=c(.5, 100, g=1), varlog=.1)
+calcBlim(S, R) #hockey-stick breakpoint
+# average  of lowest 3 SSBs that give large (above median) recruitment
+calcBlim(S, R, type=1, quant=0.5, nmin=3)
+}
 }
